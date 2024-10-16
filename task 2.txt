@@ -1,0 +1,61 @@
+from PIL import Image
+
+# Function to encrypt an image by modifying pixel values
+def encrypt_image(image_path, output_path, key):
+    try:
+        # Open the image
+        img = Image.open(image_path)
+        pixels = img.load()  # Load pixel data
+
+        # Apply the encryption by modifying each pixel value
+        for x in range(img.width):
+            for y in range(img.height):
+                r, g, b = pixels[x, y]
+
+                # Simple encryption by adding the key to each pixel value
+                pixels[x, y] = ((r + key) % 256, (g + key) % 256, (b + key) % 256)
+
+        # Save the encrypted image
+        img.save(output_path)
+        print(f"Image encrypted and saved as {output_path}")
+    except Exception as e:
+        print(f"Error during encryption: {e}")
+
+# Function to decrypt an image by reversing the encryption
+def decrypt_image(image_path, output_path, key):
+    try:
+        # Open the encrypted image
+        img = Image.open(image_path)
+        pixels = img.load()  # Load pixel data
+
+        # Reverse the encryption by subtracting the key from each pixel value
+        for x in range(img.width):
+            for y in range(img.height):
+                r, g, b = pixels[x, y]
+
+                # Simple decryption by subtracting the key
+                pixels[x, y] = ((r - key) % 256, (g - key) % 256, (b - key) % 256)
+
+        # Save the decrypted image
+        img.save(output_path)
+        print(f"Image decrypted and saved as {output_path}")
+    except Exception as e:
+        print(f"Error during decryption: {e}")
+
+def main():
+    # Specify the image file paths
+    image_path = r"C:\Users\Ayesha Nadeem\Downloads\flower.jfif"  # Update the extension if necessary
+    encrypted_image_path = r"C:\Users\Ayesha Nadeem\Downloads\encrypted_flower.jfif"
+    decrypted_image_path = r"C:\Users\Ayesha Nadeem\Downloads\decrypted_flower.jfif"
+
+    # Define a key for encryption and decryption
+    key = int(input("Enter an encryption/decryption key (integer): "))
+
+    # Encrypt the image
+    encrypt_image(image_path, encrypted_image_path, key)
+
+    # Decrypt the image
+    decrypt_image(encrypted_image_path, decrypted_image_path, key)
+
+if __name__ == "__main__":
+    main()
